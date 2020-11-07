@@ -90,11 +90,27 @@ class Batt:
                     "Battery cycles for battery {}: {}".format(i + 1, fi.read().strip())
                 )
 
+class Screensaver:
+    def __init__(self):
+        self.lock_enabled = self._check("org.gnome.desktop.screensaver", "lock-enabled")
+        self.lock_on_suspend = self._check("org.gnome.desktop.screensaver", "ubuntu-lock-on-suspend")
+        self.lock_on_idle = self._check("org.gnome.desktop.screensaver", "idle-activation-enabled")
+        self.lock_delay = self._check("org.gnome.desktop.screensaver", "lock-delay").split()[1]
+        self.idle_delay = self._check("org.gnome.desktop.session", "idle-delay").split()[1]
+
+    def _check(self, schema, setting):
+        return str(check_output(["gsettings", "get", schema, setting]), "utf-8").strip()
+
+    def status(self):
+        print("Lock enabled: {}".format(self.lock_enabled))
+        print("Lock on suspend: {}".format(self.lock_on_suspend))
+        print("Lock on idle: {}".format(self.lock_on_idle))
+        print("Idle delay: {} seconds".format(self.idle_delay))
+        print("Lock delay: {} seconds".format(self.lock_delay))
 
 def os_version():
     version = check_output("lsb_release -sd", shell=True)
     print("OS: {}".format(str(version, "utf-8").strip()))
-
 
 lshw = Lshw()
 lshw.model()
@@ -109,3 +125,5 @@ batt = Batt()
 batt.charge_counts()
 lshw.serial()
 os_version()
+screen = Screensaver()
+screen.status()
