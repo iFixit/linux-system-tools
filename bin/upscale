@@ -1,0 +1,2 @@
+#!/bin/zsh
+xclip -selection clipboard -target "image/png" -out | convert - -resize 800x600\^ - |  xclip -selection clipboard -target "image/png" -in
