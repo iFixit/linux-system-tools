@@ -112,6 +112,14 @@ def os_version():
     version = check_output("lsb_release -sd", shell=True)
     print("OS: {}".format(str(version, "utf-8").strip()))
 
+class Firewall:
+    def __init__(self):
+        out = str(check_output(["ufw", "status"]), "utf-8")
+        self.ufw_status = re.match("^Status: (\w+)$", out)[1]
+
+    def status(self):
+        print("Firewall: {}".format(self.ufw_status))
+
 lshw = Lshw()
 lshw.model()
 x = Xrandr()
@@ -127,3 +135,5 @@ lshw.serial()
 os_version()
 screen = Screensaver()
 screen.status()
+firewall = Firewall()
+firewall.status()
