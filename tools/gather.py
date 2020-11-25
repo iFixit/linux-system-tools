@@ -5,6 +5,8 @@ import json
 import re
 import math
 from pathlib import Path
+import os
+import sys
 
 
 class Lshw:
@@ -119,6 +121,12 @@ class Firewall:
 
     def status(self):
         print("Firewall: {}".format(self.ufw_status))
+
+
+if os.geteuid() != 0:
+    print("""This script needs to be run as root to inspect all the things it needs.
+Please rerun as root (`sudo python3 {}` on Ubuntu)""".format(sys.argv[0]), file=sys.stderr)
+    sys.exit(1)
 
 lshw = Lshw()
 lshw.model()
