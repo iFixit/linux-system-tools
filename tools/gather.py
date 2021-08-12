@@ -12,7 +12,7 @@ import sys
 class Lshw:
     def __init__(self):
         data = json.loads(check_output("lshw -json", shell=True))
-        self.system = data[0]
+        self.system = data if isinstance(data, dict) else data[0]
 
     def model(self):
         print(
