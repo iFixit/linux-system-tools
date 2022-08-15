@@ -117,7 +117,7 @@ def os_version():
 class Firewall:
     def __init__(self):
         out = str(check_output(["ufw", "status"]), "utf-8")
-        self.ufw_status = re.match("^Status: (\w+)$", out)[1]
+        self.ufw_status = re.match(r"^Status: (\w+)", out)[1]
 
     def status(self):
         print("Firewall: {}".format(self.ufw_status))
